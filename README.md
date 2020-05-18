@@ -1,3 +1,5 @@
+[TOC]
+
 #  程序部分
 
 ## 引进基础包
@@ -44,9 +46,7 @@ x = np.linspace(0, 1000, 1000)
 
 ### 定义函数
 
-$$
-f(x) = Asin(\omega x + \phi)
-$$
+![image-20200518231132495](img\image-20200518231132495.png)
 
 ```python
 def f(X, phi):
@@ -79,9 +79,9 @@ fitb为协方差矩阵
 
 #### 绘制拟合的函数
 
+```python
 ax = plt.gca()  # gca获取轴这个对象
 
-```python
 ax.set_xlabel(..., fontsize=20)
 ax.set_ylabel(..., fontsize=20)
 # 设置坐标轴标签字体大小
