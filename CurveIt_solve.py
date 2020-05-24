@@ -89,10 +89,11 @@ def auto_init():
     print('A=', A, ' omega=', omega, ' phi=', phi, '\n', end= '')
 
 
-def solve():
+def main():
     # init()
     auto_init()
     draw()
 
 
-solve()
+if __name__ == '__main__':
+    main()

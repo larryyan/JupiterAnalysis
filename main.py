@@ -1,2 +1,3 @@
 if __name__ == '__main__':
-    import solve
+    # import CurveIt_solve
+    import leastsq_solve
