@@ -2,6 +2,24 @@
 
 #  程序部分
 
+## 流程图
+
+```flow
+st=>start: 初始化
+in1=>inputoutput: 输入观测数据
+op1=>operation: 利用scipy的curve_fit函数拟合
+out1=>inputoutput: 生成图像并保存φ值
+
+in2=>inputoutput: 输入日期
+op2=>operation: 计算木卫坐标
+out2=>inputoutput: 输出木卫坐标
+
+end=>end: 结束
+
+st->in1->op1->out1->in2->op2->out2->end
+
+```
+
 ## 引进基础包
 
 ```python
