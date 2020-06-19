@@ -1,220 +1,42 @@
-[TOC]
+# 研究性学习项目
 
-#  程序部分
+- 张诗瑶、张天一、韩天远、严嘉哲、李胤辰
 
-## 流程图
+## 操作方法
 
-```flow
-st=>start: 初始化
-in1=>inputoutput: 输入观测数据
-op1=>operation: 利用scipy的curve_fit函数拟合
-out1=>inputoutput: 生成图像并保存φ值
+运行main.py
 
-in2=>inputoutput: 输入日期
-op2=>operation: 计算木卫坐标
-out2=>inputoutput: 输出木卫坐标
+输入木星卫星位置信息
 
-end=>end: 结束
+自动生成卫星位置变化图像
 
-st->in1->op1->out1->in2->op2->out2->end
+从而验证开普勒第三定律
 
-```
+## 开普勒三定律
 
-## 引进基础包
+### 开普勒第一定律
 
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-import scipy.optimize as optimize
-import random
-```
+- 所有行星绕太阳的轨道都是椭圆，太阳在椭圆的一个焦点上。
 
+### 开普勒第二定律
 
+- 行星和太阳的连线在相等的时间间隔内扫过的面积相等。
 
-## 初始化数据
+### 开普勒第三定律
 
-```python
-X = np.array([0])
-Y = np.array([0])
-A = 0.1
-omega = 0.1
+- a：半轴长
 
-def init():
-    global X, Y
-    n = int(input('组数：'))
-	tx = []
-    ty = []
-    for i in range(n):
-        x = int(input('x: '))
-        y = int(input('y: '))
-        tx.append(x)
-        ty.append(y)
-    X = np.array(tx)
-    Y = np.array(ty)
-```
+- T：周期
 
-## 正弦函数拟合
+- k为常数
 
-### 定义画布
+- $$
+  \frac{a^3}{T^2}=k
+  $$
 
-```python
-plt.figure(figsize=(15, 10))
-x = np.linspace(0, 1000, 1000)
-```
+## 实验原理
 
-### 定义函数
-
-![image-20200518231132495](img\image-20200518231132495.png)
-
-```python
-def f(X, phi):
-    return A * np.sin(omega * X + phi)
-```
-
-### 绘制散点
-
-```python
-plt.scatter(X, Y, s=100, alpha=1.0, marker='x', label=u'数据点')
-```
-
-### 拟合正弦函数
-
-#### 拟合得出函数参数
-
-这里我们使用的是python中scipy模块的子模块optimize中提供了一个专门用于曲线拟合的函数**curve_fit()**。
-
-这是基于**广义逆的最小二乘曲线拟合**，采用**满秩分解**。
-
-```python
-param_bounds = ([0], [2*np.pi])  # 设定下界和上界
-fita, fitb = optimize.curve_fit(f, X, Y, bounds= param_bounds)
-phi = fita[0]
-```
-
-fita为函数各参数
-
-fitb为协方差矩阵
-
-#### 绘制拟合的函数
-
-```python
-ax = plt.gca()  # gca获取轴这个对象
-
-ax.set_xlabel(..., fontsize=20)
-ax.set_ylabel(..., fontsize=20)
-# 设置坐标轴标签字体大小
-
-plt.plot(x, y, color='r', linewidth=3, linestyle="-", markersize=5, label=u'拟合曲线')
-```
-## 图像显示
-
-```python
-plt.legend(loc=0, numpoints=1)
-leg = plt.gca().get_legend()
-ltext = leg.get_texts()
-plt.setp(ltext, fontsize='xx-large')
-
-plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
-plt.rcParams['axes.unicode_minus'] = False    # 正常显示负号
-
-plt.xlabel(u'时间(分钟)')
-plt.ylabel(u'y(10^8米)')
-
-plt.xlim(0, x.max() * 1.1)
-plt.ylim(y.min() * 0.9, y.max() * 1.1)
-
-plt.xticks(fontsize=20)
-plt.yticks(fontsize=20)
-# 刻度字体大小
-
-plt.savefig(fname= 'jupiter.svg', format='svg')
-plt.show()
-```
-
-# 整体程序
-
-```python
-# -*- coding=utf-8 -*-
-
-import numpy as np
-import matplotlib.pyplot as plt
-import scipy.optimize as optimize
-import random
-
-# y = A * sin(omega*x + phi)
-X = np.array([0])
-Y = np.array([0])
-A = 0.1
-omega = 0.1
-
-
-def f(X, phi):
-    return A * np.sin(omega * X + phi)
-
-
-def draw():
-    plt.figure(figsize=(15, 10))
-    x = np.linspace(0, 1000, 1000)
-
-    param_bounds = ([0], [2*np.pi])  # 设定下界和上界
-    fita, fitb = optimize.curve_fit(f, X, Y, bounds= param_bounds)
-    phi = fita[0]
-
-    print('A=', A, ' omega=', omega, ' phi=', phi, '\n', end= '')
-
-    plt.scatter(X, Y, s=100, alpha=1.0, marker='x', label=u'数据点')
-
-    y = f(x, phi)
-
-    ax = plt.gca()  # gca获取轴这个对象
-
-    ax.set_xlabel(..., fontsize=20)
-    ax.set_ylabel(..., fontsize=20)
-    # 设置坐标轴标签字体大小
-
-    plt.plot(x, y, color='r', linewidth=3, linestyle="-", markersize=5, label=u'拟合曲线')
-
-    plt.legend(loc=0, numpoints=1)
-    leg = plt.gca().get_legend()
-    ltext = leg.get_texts()
-    plt.setp(ltext, fontsize='xx-large')
-
-    plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
-    plt.rcParams['axes.unicode_minus'] = False    # 正常显示负号
-
-    plt.xlabel(u'时间(分钟)')
-    plt.ylabel(u'y(10^8米)')
-
-    plt.xlim(0, x.max() * 1.1)
-    plt.ylim(y.min() * 0.9, y.max() * 1.1)
-
-    plt.xticks(fontsize=20)
-    plt.yticks(fontsize=20)
-    # 刻度字体大小
-
-    plt.savefig(fname= 'jupiter.svg', format='svg')
-    plt.show()
-
-
-def init():
-    global X, Y
-    n = int(input('组数：'))
-    tx = []
-    ty = []
-    for i in range(n):
-        x = int(input('x: '))
-        y = int(input('y: '))
-        tx.append(x)
-        ty.append(y)
-    X = np.array(tx)
-    Y = np.array(ty)
-
-
-def solve():
-    init()
-    draw()
-
-
-solve()
-```
-
+- 半长轴近似成半径
+- 利用python拟合
+  - scipy库里的optimize下的curve_fit函数进行拟合
+- 利用拟合出的矢量图找到多组数据验证定律
