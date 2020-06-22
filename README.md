@@ -68,7 +68,7 @@ title: Physic Project
 - Python拟合程序v1.0（6.22）
 - ……
 
-##联系方式
+## 联系方式
 
 * 邮件:[@严嘉哲](mailto:larry_yan2010@fox.com) |
     [@张诗瑶](mailto:) |
