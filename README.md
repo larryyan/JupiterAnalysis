@@ -1,5 +1,5 @@
 ---
-title: Phisic Project
+title: Physic Project
 ---
 
 <!-- TOC -->
