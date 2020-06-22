@@ -10,8 +10,8 @@ import datetime
 import time
 
 # y = A * sin(omega*x + phi)
-X = np.array([0])
-Y = np.array([0])
+X = np.array([])
+Y = np.array([])
 """
 A = 0.1
 omega = 0.1
@@ -19,6 +19,7 @@ omega = 0.1
 
 TimeRow = []
 Star = [[], [], [], []]
+tempx = []
 
 
 def f(X, omega, A, phi):
@@ -27,54 +28,66 @@ def f(X, omega, A, phi):
 
 def draw():
     fig = plt.figure(figsize=(15, 10))
+    fig1, ax = plt.subplots()
 
-    x = np.linspace(X[0], X[len(X)-1], 100)
+    x = np.linspace(X[0], X[len(X)-1], 20)
+    listxnumber = x.tolist()
+    listxdatetime = [datetime.datetime.fromtimestamp(i * 1000) for i in listxnumber]
+    timex = np.array([d.strftime('%Y-%m-%d %H:%M:%S') for d in listxdatetime])
+    # print(timex, x)
 
-    param_bounds = ([20, 0.75, 0], [500, 1.5, 2*np.pi])  # 设定下界和上界
-    pos = np.array([100, 1, 0])                     # init possible answer
-    fita, fitb = optimize.curve_fit(f, X, Y, p0= pos, \
-        bounds= param_bounds, maxfev= 100000000)
+    param_bounds = ([0, 0.9, 0], [1, 1.5, 2*np.pi])  # 设定下界和上界
+    pos = np.array([0.8, 1, 0])                     # init possible answer
+    fita, fitb = optimize.curve_fit(f, X, Y, p0= pos, bounds= param_bounds, maxfev= 100000000)
 
     omega, A, phi = fita
 
     print('A=', A, ' omega=', omega, ' phi=', phi, '\n', end= '')
 
-    plt.plot(X, Y, 'rx', label=u'数据点')
-
     y = f(x, omega, A, phi)
 
-    plt.plot(x, y, 'k--', label=u'拟合曲线')
-    
-    plt.xlim(int(X[0]), int(X[len(X)-1]+1))
-    plt.ylim(int(Y[0]), int(Y[len(Y)-1]+1))
+    # plt.plot(TimeRow, Y, 'rx', label=u'数据点')
+    ax.plot(Y, 'rx', label=u'数据点')
+
+    # plt.plot(timex, y, 'k--', label=u'拟合曲线')
+    ax.plot(y, 'k--', label=u'拟合曲线')
+
+    # plt.xlim(int(min(X)), int(max(X)))
+    # plt.ylim(int(min(Y)), int(max(Y)))
 
     plt.legend()
-
-    ax = fig.add_subplot(111)
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M:%S"))
-    ax.set_xtricks(datetime.strptime(d, '%Y-%m-%d %H:%M:%S') for d in TimeRow)
-
 
     plt.rcParams['font.sans-serif'] = ['SimHei']              # 显示中文标签
     plt.rcParams['axes.unicode_minus'] = False                # 正常显示负号
 
+    xticks = list(range(0, len(TimeRow), 3))
+    xlabels = [TimeRow[x] for x in xticks]
+    xticks.append(len(TimeRow))
+    xlabels.append(TimeRow[-1])
+
+    ax.set_xticks(xticks)
+    ax.set_xticklabels(xlabels)
+
     plt.xlabel(u'时间')
     plt.ylabel(u'水平方向木星距离(百万千米)')
 
-
-    plt.xticks(fontsize=20, rotation=70)
+    plt.xticks(fontsize=10, rotation=270)
     plt.yticks(fontsize=20)
     # 刻度字体大小
 
-    plt.savefig(fname= 'jupiter.svg', format='svg')
     plt.show()
+    plt.savefig(fname= 'jupiter.svg', format='svg')
 
     return None
 
 
 def addTimeRow(numtuple=()):
-    global TimeRow
-    TimeRow.append(datetime.datetime(*numtuple))
+    global TimeRow, tempx
+    timerowdatetime = (datetime.datetime(*numtuple))
+    TimeRow.append(timerowdatetime.strftime('%Y-%m-%d %H:%M:%S'))
+    tempx.append(time.mktime(datetime.datetime(*numtuple).timetuple()))
+
+    return None
 
 
 def init():
@@ -118,9 +131,9 @@ def main():
 
     init()
 
-    X = np.array(TimeRow)
+    X = np.array(tempx) / 1000
 
-    print(X)
+    # (X)
     for i in range(4):
         Y = np.array(Star[i])
         draw()
