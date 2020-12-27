@@ -109,23 +109,6 @@ def init():
     return None
 
 
-"""
-def auto_init():
-    global X, Y, A, omega
-    A = eval(input('轨道半径（10^8米）：'))
-    T = eval(input('轨道周期（分钟）：'))
-    start_time = eval(input('开始观测时间：'))
-    end_time = eval(input('结束观测时间：'))
-    time_interval = eval(input('观测时间间隔：'))
-    omega = 2 * np.pi / T
-    phi = random.uniform(0, 2 * np.pi)
-    X = np.arange(start_time, end_time, time_interval)
-    Y = A * (np.sin(omega * X + phi) + np.random.rand() * 1 - 0.2)
-    print(X, '\n', Y)
-    print('A=', A, ' omega=', omega, ' phi=', phi, '\n', end= '')
-"""
-
-
 def main():
     global X, Y
 
@@ -141,11 +124,6 @@ def main():
         break
     
     return None
-    
-
-
-#    auto_init()
-#    draw()
 
 
 if __name__ == '__main__':
