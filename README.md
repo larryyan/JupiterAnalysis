@@ -57,7 +57,7 @@
   - scipy库里的optimize下的curve_fit函数进行拟合
 - 利用拟合出的矢量图找到多组数据验证定律
 - 大致就这样
-- 详见(程序原理)[https://github.com/larryyan/JupiterAnalysis/ProgramDetail.md]
+- 详见(程序原理)[https://github.com/larryyan/JupiterAnalysis/blob/master/ProgramDetail.md]
 - 使用时只需打开curve fit实现的那个，leastsq实现并没有成功。（main是干啥的，不用管
 
 ## 进度
